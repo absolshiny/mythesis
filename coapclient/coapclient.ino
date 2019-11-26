@@ -150,7 +150,19 @@ void loop() {
       stadoact = 0;
       //Serial.println("caso4");
       break;
-
+   case 5:     
+      msgid = coap.get(ip, port, "Permission");
+      stadoact = 0;
+      break;
+   case 6:
+   {
+      String Xtarget= "Target"+String(idbot);
+      char Ptarget[8];
+      Xtarget.toCharArray(Ptarget,8);
+      msgid = coap.get(ip, port, Ptarget);
+      stadoact = 0;
+      break;
+  }
     default:
       //Serial.println("default");
       stadoact = 0;
