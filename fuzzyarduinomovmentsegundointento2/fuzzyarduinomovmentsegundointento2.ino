@@ -7,6 +7,8 @@ SoftwareSerial ESP1 (2, 3);
 #define PI_2 3.1415926535897932384626433832795
 
 
+byte Permiso=0;
+
 float X = 0;
 float Y = 0;
 
@@ -56,7 +58,7 @@ float v;
 float w;
 int16_t vmot1 = 0;
 int16_t vmot2 = 0;
-
+byte incommingmsg=0;
 byte trigPin1 = 6;    // Trigger
 byte echoPin1 = 7;    // Echo izquierdo
 byte trigPin2 = 8;
@@ -103,15 +105,24 @@ void setup() {
   delay(1000);
 }
 
-byte nvtget = 2;
 
 void loop() {
   //el valor actual de tiempo
   long currenttime = millis();
-  // Parte de movimiento
+// Pedir permiso para empezar a moverse
+if (Permiso == 0)
+{
+  while (true){
+    ask4permission();
+    delay (500);
+    if (Permiso ==1){
+      break;
+    }
+  }
+}
+    // Parte de movimiento
   if (currenttime - lasttime > espera1)
   {
-    //Serial.println("probando parte 1");
     dist1cm = medirdist(trigPin1, echoPin1);
     dist2cm = medirdist(trigPin2, echoPin2);
     dist3cm = medirdist(trigPin3, echoPin3);
@@ -151,6 +162,7 @@ void loop() {
   {
     SendPositions(X, Y, IDbot, Statecom);
     lastcom = millis();
+    incommingmsg=1;
     Statecom = 2;
   }
   if (Statecom == 2 and (millis() - lastcom) > 1500)
@@ -158,6 +170,7 @@ void loop() {
 
     SendPositions(X, Y, IDbot, Statecom);
     Statecom = 3;
+    incommingmsg=0;
   }
 
   if (Statecom == 3)
@@ -165,30 +178,49 @@ void loop() {
     Ask4allpositions(Statecom);
     lastcom = millis();
     Statecom = 4;
+    incommingmsg=1;
   }
 
   if ((Statecom == 4) and ((millis() - lastcom) > 1500))
   {
 
     Ask4allpositions(Statecom);
-    Statecom = 1;
-    //Serial.print(posi.x[0]);
-    //Serial.print("::");
-    //Serial.println(posi.y[0]);
+    Statecom = 5;
+    incommingmsg=0;
   }
-
-  //Alghoritm of movement
-  if ((P < 10))
+  if ((Statecom == 5))
   {
-  motor(20, 20);
+    ask4tgetsid(IDbot,Statecom);
+    lastcom = millis();
+    Statecom = 6;
+    incommingmsg=1;
+  }
+    if ((Statecom == 6) and ((millis() - lastcom) > 1500))
+  {
+
+    ask4tgetsid(IDbot,Statecom);
+    Statecom = 1;
+    incommingmsg=0;
+  }
+  
+  //Alghoritm of movement
+  
+  if ((P < 10) and (incommingmsg==0))
+  {
+  motor(1, 1);
   float oldtgetx=Xtget;
   float oldtgety=Ytget;
+  SendPositions(X, Y, IDbot, 1);
   delay(2000);
+  SendPositions(X, Y, IDbot, 2);
+   Statecom = 1;
+  delay(1000);
   while (true) 
 {
-   ask4tgets();
-   delay(3000);
-   if (not (oldtgetx==Xtget))
+   ask4tgetsid(IDbot,5);
+   delay(1500);
+    ask4tgetsid(IDbot,6);
+   if (not (oldtgetx==Xtget) or not (oldtgety==Ytget))
    {
     break;
    }

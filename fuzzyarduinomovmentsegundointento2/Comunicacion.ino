@@ -1,11 +1,22 @@
 String ReadString = "";
 boolean aviso = false;
 
+void ask4permission(){
+  resetincome();
+  Serial.write("5,1,100,100");
+  delay(1500);
+  respuesta();
+  char data[3];
+  ReadString.toCharArray(data,3);
+  Permiso=atof(data);
+  return;
+}
+
 void ask4id()
 {
   resetincome();
   Serial.write("1,2,2.444,2.444");
-  delay(2000);
+  delay(1500);
   respuesta();
   char data[3];
   ReadString.toCharArray(data, 3);
@@ -36,32 +47,76 @@ void respuesta()
 void ask4tgets() {
   resetincome();
   Serial.write("2,2,2.444,2.444");
-  delay(2000);
+  delay(1500);
   respuesta();
   char data[9];
   ReadString.toCharArray(data, 9);
+   Recuperartgets(data);
+   return;
+}
+void Recuperartgets(char data[9]){
   char bfferX[4];
   char bfferY[4];
+  int8_t cont=1;
   for (int i = 0; i < 4; i++)
   {
-    bfferX[i] = data[i + 1];
-    bfferY[i] = data[i + 5];
+    if (data[i+1]==','){
+      cont+=1;
+      bfferX[i]=".";
+      break;
+    }
+    
+    bfferX[i] = data[cont];
+    cont+=1;
+  }
+    for (int i = 0; i < 4; i++)
+  {
+    if (data[i+1]==','){
+      cont+=1;
+      bfferY[i]=".";
+      break;
+    }
+    
+    bfferY[i] = data[cont];
+    cont+=1;
   }
   Xtget = atof(bfferX);
   Ytget = atof(bfferY);
   return;
 }
 
-void SendPositions(float px , float py , int8_t id,byte comstat)
+void ask4tgetsid(int8_t id, byte comstat) {
+  resetincome();
+  if (comstat==5)
+  {
+  char pload[22];
+  ReadString = "6," + String(id) + ",100,100,";
+  ReadString.toCharArray(pload, 22);
+  //Serial.print(pload);
+  Serial.write(pload);
+  return;
+  }
+  if (comstat==6)
+  {
+  respuesta();
+  char data[9];
+  ReadString.toCharArray(data, 9);
+   Recuperartgets(data);
+  return;
+  }
+}
+
+void SendPositions(float px , float py , int8_t id, byte comstat)
 {
+  resetincome();
   if (comstat ==1)
   {
-  resetincome();
   char pload[22];
   ReadString = "3," + String(id) + "," + String(px, 1) + "," + String(py, 1) + ",";
   ReadString.toCharArray(pload, 22);
   //Serial.print(pload);
   Serial.write(pload);
+  return;
   }
   if (comstat==2)
   {
