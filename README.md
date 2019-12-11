@@ -4,7 +4,9 @@ Este trabajo requiere hasta ahora el uso de la libreria ARDYNO que es una librer
 con los motores Dynamixel ax12
 https://github.com/descampsa/ardyno
 
-
+Ademas se la libreriria:
+https://github.com/automote/ESP-CoAP/blob/master/examples/coapclient/coapclient.ino
+para el ESP8266
 Se requiere ademas instalar las siguientes librerias en NODE red:
 https://flows.nodered.org/node/node-red-contrib-coap
 
