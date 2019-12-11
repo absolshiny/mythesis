@@ -1,26 +1,24 @@
 // Test motor wheel mode
 
 #include "DynamixelMotor.h"
+#include "SoftwareSerial.h"
 
 // id of the motor
-const uint8_t id1=1;
-const uint8_t id2=2;
+const uint8_t id1=4;
+const uint8_t id2=9;
 // speed, between -1023 and 1023
-int16_t speed=550;
+int16_t velocity=300;
 // communication baudrate
 const long unsigned int baudrate = 9600;
 
 // hardware serial without tristate buffer
 // see blink_led example, and adapt to your configuration
-#define SOFT_RX_PIN 3
-
+#define SOFT_RX_PIN 4
 #define SOFT_TX_PIN 5
 SoftwareDynamixelInterface interface(SOFT_RX_PIN, SOFT_TX_PIN);
+    
 DynamixelMotor motor1(interface, id1);
 DynamixelMotor motor2(interface, id2);
-DynamixelDevice readdevice1(interface, id1);
-DynamixelDevice readdevice2(interface, id2);
-
 
 void setup()
 { 
@@ -36,7 +34,7 @@ void setup()
     digitalWrite(LED_BUILTIN, HIGH);
     while(1);
   }
-  interface.begin(baudrate);
+
   motor1.enableTorque();  
   motor1.wheelMode();
   motor2.enableTorque();  
@@ -46,8 +44,9 @@ void setup()
 //change motion direction every 5 seconds
 void loop() 
 {
-  motor1.speed(speed);
-  motor2.speed(-speed);
-  //speed=-speed;
-  delay(5000);
+  motor1.speed(velocity);
+  delay(5);
+  motor2.speed(-velocity);
+  velocity=-velocity;
+  delay(500);
 }
