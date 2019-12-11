@@ -17,7 +17,7 @@ int stadoact = 0;
 float x = 0;
 float y = 0;
 //ip address and default port of coap server in which your interested in
-IPAddress ip(192, 168, 100, 102); //take ETH Zurich or coap.me server to run and check client
+IPAddress ip(192, 168, 100, 101); //take ETH Zurich or coap.me server to run and check client
 int port = 5683;
 
 

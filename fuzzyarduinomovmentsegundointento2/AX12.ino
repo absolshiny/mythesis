@@ -1,6 +1,7 @@
 void motor (int16_t Vmot_1, int16_t Vmot_2)
 {
   motor1.speed(Vmot_1);
+  delay(5);
   motor2.speed(-Vmot_2-20);
   return;
 }

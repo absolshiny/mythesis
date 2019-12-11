@@ -18,8 +18,8 @@ float Ytget = 0;
 long espera1 = 500;
 long lasttime;
 long lastcalculo;
-const uint8_t id1 = 2;
-const uint8_t id2 = 8;
+const uint8_t id1 = 9;
+const uint8_t id2 = 4;
 
 int16_t IDbot;
 long unsigned int lastcom = 0;
