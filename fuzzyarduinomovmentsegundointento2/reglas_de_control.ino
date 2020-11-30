@@ -6,10 +6,9 @@ void cinematica20(float xr, float yr, float xt,float yt)
   //beta=atan2((yt-yr),(xt-xr));
   //alpha=beta-theta;
   float alpha_ob= atan2((yt-yr),(xt-xr));
-  float XL=cos(theta-alpha_ob);
-  float YL=sin(theta-alpha_ob);
+  float alpha_rob= atan2(ythe,xthe);
 
-  alpha=atan2(YL,XL);
+  alpha=atan2(sin(alpha_ob-alpha_rob),cos(alpha_ob-alpha_rob));
   return;
 }
 
@@ -41,7 +40,7 @@ void tangyang(float alpa, float Pet)
 }
 
 
-void odometria(int v_mot1, int vmot_2, float xold, float yold, float tethaold)
+void odometria(int v_mot1, int vmot_2, float xold, float yold, float xthe_o, float ythe_o)
 {
   
   float Ss;
@@ -53,20 +52,21 @@ void odometria(int v_mot1, int vmot_2, float xold, float yold, float tethaold)
   lastcalculo=millis();
   Ss=(r/2)*(er+el);
   Ste=(r/d)*(er-el);
+  float onang=atan2(ythe_o,xthe_o);
   //Serial.println("Delta s Delta teta");
   //Serial.print(Ss);
   //Serial.print("   ");
   //Serial.println(Ste);
-  X= xold+Ss*cos(tethaold);
-  Y= yold+Ss*sin(tethaold);
-  theta=tethaold+Ste;
-  theta=corregirangulo(theta);
+  X= xold+Ss*cos(onang);
+  Y= yold+Ss*sin(onang);
+  xthe=xthe_o*cos(Ste)-ythe*sin(Ste);
+  ythe=xthe_o*sin(Ste)-ythe*cos(Ste);
   return;
 }
 
-float mod_mot(int mot, int mseg){
+float mod_mot(int mot, float mseg){
   float vel;
-  if (mot<150){ 
+  if (mot<100){ 
     vel= 0;
   }
   else {

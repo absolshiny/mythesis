@@ -18,8 +18,8 @@ float Ytget = 0;
 long espera1 = 500;
 long lasttime;
 long lastcalculo;
-const uint8_t id1 = 9;
-const uint8_t id2 = 4;
+const uint8_t id1 = 12; //izq 
+const uint8_t id2 = 14; //der
 
 int16_t IDbot;
 long unsigned int lastcom = 0;
@@ -47,7 +47,8 @@ DynamixelDevice readdevice2(interface, id2);
 
 int enc1;
 int enc2;
-float xn, yn, thetan;
+float xthe=1;
+float ythe=0;
 float wl;
 float wr;
 const float d = 13;
@@ -130,7 +131,7 @@ if (Permiso == 0)
     dist2cm = medirdist(trigPin2, echoPin2);
     dist3cm = medirdist(trigPin3, echoPin3);
     
-    odometria(vmot1, vmot2, X, Y, theta);
+    odometria(vmot1, vmot2, X, Y, xthe,ythe);
 
     //if (dist1cm < 8 or dist2cm < 10 or dist3cm<8)
    // {
