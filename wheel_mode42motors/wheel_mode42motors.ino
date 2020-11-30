@@ -4,10 +4,10 @@
 #include "SoftwareSerial.h"
 
 // id of the motor
-const uint8_t id1=4;
-const uint8_t id2=9;
+const uint8_t id1=10;
+const uint8_t id2=16;
 // speed, between -1023 and 1023
-int16_t velocity=300;
+int16_t velocity=400;
 // communication baudrate
 const long unsigned int baudrate = 9600;
 
@@ -45,7 +45,7 @@ void setup()
 void loop() 
 {
   motor1.speed(velocity);
-  delay(5);
+  delay(7);
   motor2.speed(-velocity);
   velocity=-velocity;
   delay(500);

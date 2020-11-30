@@ -4,7 +4,7 @@
 
 // id of the motor
 const uint8_t id1=1;
-const uint8_t id2=2;
+const uint8_t id2=7;
 // speed, between -1023 and 1023
 int16_t speed=550;
 // communication baudrate

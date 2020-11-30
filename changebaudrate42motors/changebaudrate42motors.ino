@@ -5,8 +5,8 @@
 #include "DynamixelMotor.h"
 
 // motor id
-const uint8_t id=4;
-const uint8_t id2=11;
+const uint8_t id=10;
+const uint8_t id2=15;
 
 const unsigned long baudrate_before=1000000;
 const unsigned long baudrate_after=9600;

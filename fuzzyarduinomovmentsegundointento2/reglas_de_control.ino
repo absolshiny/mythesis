@@ -5,8 +5,10 @@ void cinematica20(float xr, float yr, float xt,float yt)
   P= sqrt(pow((xt-xr),2)+pow((yt-yr),2));
   //beta=atan2((yt-yr),(xt-xr));
   //alpha=beta-theta;
-  float XL=cos(theta)*(xt-xr)+sin(theta)*(yt-yr);
-  float YL=-sin(theta)*(xt-xr)+cos(theta)*(yt-yr);
+  float alpha_ob= atan2((yt-yr),(xt-xr));
+  float XL=cos(theta-alpha_ob);
+  float YL=sin(theta-alpha_ob);
+
   alpha=atan2(YL,XL);
   return;
 }
@@ -46,8 +48,8 @@ void odometria(int v_mot1, int vmot_2, float xold, float yold, float tethaold)
   float Ste;
 //  float er = (((-0.216+(0.004*v_mot1))*2.0*PI_2)*(millis()-lastcalculo)/1000);
 //  float el = (((-0.216+(0.004*vmot_2))*2.0*PI_2)*(millis()-lastcalculo)/1000);
-  float el = (((-0.280+(0.006*v_mot1)))*(millis()-lastcalculo)/1000);
-  float er = (((-0.280+(0.006*vmot_2)))*(millis()-lastcalculo)/1000);
+  float el = mod_mot(v_mot1,millis());
+  float er = mod_mot(vmot_2,millis());
   lastcalculo=millis();
   Ss=(r/2)*(er+el);
   Ste=(r/d)*(er-el);
@@ -60,6 +62,17 @@ void odometria(int v_mot1, int vmot_2, float xold, float yold, float tethaold)
   theta=tethaold+Ste;
   theta=corregirangulo(theta);
   return;
+}
+
+float mod_mot(int mot, int mseg){
+  float vel;
+  if (mot<150){ 
+    vel= 0;
+  }
+  else {
+    vel=(((-0.280+(0.006*mot)))*(mseg-lastcalculo)/1000);
+  }
+  return vel;
 }
 
 

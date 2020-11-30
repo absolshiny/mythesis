@@ -8,8 +8,8 @@
 coapClient coap;
 
 //WiFi connection info
-const char* ssid = "Homeworld";
-const char* password = "jazmin123";
+const char* ssid = "RASPBERRY1";
+const char* password = "12345678";
 //const char* ssid = "TP-LINK_60D8";
 //const char* password = "18541953";
 const unsigned int MAX_INPUT = 16;
@@ -17,7 +17,7 @@ int stadoact = 0;
 float x = 0;
 float y = 0;
 //ip address and default port of coap server in which your interested in
-IPAddress ip(192, 168, 100, 101); //take ETH Zurich or coap.me server to run and check client
+IPAddress ip(10, 42, 0, 1); //take ETH Zurich or coap.me server to run and check client
 int port = 5683;
 
 

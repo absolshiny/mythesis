@@ -4,7 +4,7 @@
 #include <stdio.h>
 SoftwareSerial ESP1 (2, 3);
 
-#define PI_2 3.1415926535897932384626433832795
+#define PI_2 3.1415926535897932
 
 
 byte Permiso=0;
@@ -93,6 +93,9 @@ void setup() {
   //Se solicita una identificacion
   while (Serial.available() > 0)  Serial.read();
   ask4id();
+  SendPositions(X, Y, IDbot, 1);
+  delay(2000);
+  SendPositions(X, Y, IDbot, 2);
   //Serial.print(IDbot);
   // Serial.println();
   //Se solicita un objectivo
@@ -205,9 +208,9 @@ if (Permiso == 0)
   
   //Alghoritm of movement
   
-  if ((P < 10) and (incommingmsg==0))
+  if ((P < 6) and (incommingmsg==0))
   {
-  motor(1, 1);
+  motor(10, 10); //Apagar motores
   float oldtgetx=Xtget;
   float oldtgety=Ytget;
   SendPositions(X, Y, IDbot, 1);
@@ -216,15 +219,16 @@ if (Permiso == 0)
    Statecom = 1;
   delay(1000);
   while (true) 
-{
+    {
    ask4tgetsid(IDbot,5);
    delay(1500);
     ask4tgetsid(IDbot,6);
-   if (not (oldtgetx==Xtget) or not (oldtgety==Ytget))
-   {
+    cinematica20 (X, Y, Xtget, Ytget);
+   if (P>7)
+      {
     break;
-   }
-}
+      }
+    }
 
   }
 
