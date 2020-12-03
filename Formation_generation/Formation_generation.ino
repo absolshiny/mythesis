@@ -9,17 +9,19 @@ SoftwareSerial ESP1 (2, 3);
 
 byte Permiso=0;
 
-float X = 0;
-float Y = 0;
+float X = 90;
+float Y = 120;
+float xthe=0;
+float ythe=-1;
 
 float Xtget = 0;
 float Ytget = 0;
 
-long espera1 = 500;
+long espera1 = 300;
 long lasttime;
 long lastcalculo;
-const uint8_t id1 = 2; //izq 
-const uint8_t id2 = 8; //der
+const uint8_t id1 = 9; //izq 
+const uint8_t id2 = 4; //der
 
 int16_t IDbot;
 long unsigned int lastcom = 0;
@@ -47,8 +49,7 @@ DynamixelDevice readdevice2(interface, id2);
 
 int enc1;
 int enc2;
-float xthe=1;
-float ythe=0;
+
 float wl;
 float wr;
 const float d = 13;
@@ -100,21 +101,17 @@ void setup() {
   //Serial.print(IDbot);
   // Serial.println();
   //Se solicita un objectivo
-  ask4tgets();
-  
+  //ask4tgets();
+  ask4tgetsid(IDbot,5);
+  delay(1500);
+  ask4tgetsid(IDbot,6);
   // Serial.print(Xtget);
   //Serial.print(" : ");
   //Serial.print(Ytget);
   //Serial.println();
   delay(1000);
-}
-
-
-void loop() {
-  //el valor actual de tiempo
-  long currenttime = millis();
-// Pedir permiso para empezar a moverse
-if (Permiso == 0)
+  
+  if (Permiso == 0)
 {
   while (true){
     ask4permission();
@@ -124,6 +121,16 @@ if (Permiso == 0)
     }
   }
 }
+
+  
+}
+
+
+void loop() {
+  //el valor actual de tiempo
+  long currenttime = millis();
+// Pedir permiso para empezar a moverse
+
     // Parte de movimiento
   if (currenttime - lasttime > espera1)
   {
@@ -153,7 +160,7 @@ if (Permiso == 0)
     //{
       cinematica20 (X, Y, Xtget, Ytget);
       movfuzzycator(alpha, P);
-      espera1 = 290;
+      espera1 =100;
     //}
     motor(vmot1, vmot2);
 
@@ -169,7 +176,7 @@ if (Permiso == 0)
     incommingmsg=1;
     Statecom = 2;
   }
-  if (Statecom == 2 and (millis() - lastcom) > 1500)
+  if (Statecom == 2 and ((millis() - lastcom) > 1500))
   {
 
     SendPositions(X, Y, IDbot, Statecom);
@@ -192,40 +199,48 @@ if (Permiso == 0)
     Statecom = 5;
     incommingmsg=0;
   }
-  if ((Statecom == 5))
-  {
-    ask4tgetsid(IDbot,Statecom);
-    lastcom = millis();
-    Statecom = 6;
-    incommingmsg=1;
-  }
-    if ((Statecom == 6) and ((millis() - lastcom) > 1500))
-  {
-
-    ask4tgetsid(IDbot,Statecom);
-    Statecom = 1;
-    incommingmsg=0;
-  }
-  
+//  if ((Statecom == 5))
+//  {
+//    ask4tgetsid(IDbot,Statecom);
+//    lastcom = millis();
+//    Statecom = 6;
+//    incommingmsg=1;
+//  }
+//    if ((Statecom == 6) and ((millis() - lastcom) > 1500))
+//  {
+//
+//    ask4tgetsid(IDbot,Statecom);
+//    Statecom = 1;
+//    incommingmsg=0;
+//  }  
   //Alghoritm of movement
-  
+    if ((Statecom == 5))
+  {
+    if (Permiso==0)
+    {
+    forma();
+    Statecom=1;
+    }
+    
+    Statecom=1;
+  }
+
+
+
   if ((P < 6) and (incommingmsg==0))
   {
   motor(10, 10); //Apagar motores
-  float oldtgetx=Xtget;
-  float oldtgety=Ytget;
   SendPositions(X, Y, IDbot, 1);
-  delay(2000);
+  delay(1500);
   SendPositions(X, Y, IDbot, 2);
    Statecom = 1;
-  delay(1000);
   while (true) 
     {
-   ask4tgetsid(IDbot,5);
-   delay(1500);
-    ask4tgetsid(IDbot,6);
+   ask4permission();
+   delay(500);
+   forma();
     cinematica20 (X, Y, Xtget, Ytget);
-   if (P>7)
+   if (P>7 and Permiso==0)
       {
     break;
       }
