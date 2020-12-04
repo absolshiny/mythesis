@@ -9,7 +9,7 @@ SoftwareSerial ESP1 (2, 3);
 
 byte Permiso=0;
 
-float X = 90;
+float X = 150;
 float Y = 120;
 float xthe=0;
 float ythe=-1;
@@ -20,8 +20,8 @@ float Ytget = 0;
 long espera1 = 300;
 long lasttime;
 long lastcalculo;
-const uint8_t id1 = 9; //izq 
-const uint8_t id2 = 4; //der
+const uint8_t id1 = 2; //izq 
+const uint8_t id2 = 8; //der
 
 int16_t IDbot;
 long unsigned int lastcom = 0;
@@ -219,7 +219,6 @@ void loop() {
     if (Permiso==0)
     {
     forma();
-    Statecom=1;
     }
     
     Statecom=1;
@@ -227,7 +226,7 @@ void loop() {
 
 
 
-  if ((P < 6) and (incommingmsg==0))
+  if ((P < 7) and (incommingmsg==0))
   {
   motor(10, 10); //Apagar motores
   SendPositions(X, Y, IDbot, 1);
@@ -238,14 +237,34 @@ void loop() {
     {
    ask4permission();
    delay(500);
-   forma();
-    cinematica20 (X, Y, Xtget, Ytget);
-   if (P>7 and Permiso==0)
+   if (Permiso==0)
       {
     break;
       }
     }
-
+    switch(IDbot){
+      case 3:
+      delay(1);
+      break;
+      case 4:
+      delay(5000);
+      break;
+      case 2:
+      delay(10000);
+      break;
+      case 5:
+      delay(15000);
+      break;
+      case 1:
+      delay(20000);
+      break;
+      case 6:
+      delay(25000);
+      break;
+    }
+    
+    forma();
+    cinematica20 (X, Y, Xtget, Ytget);
   }
 
 }

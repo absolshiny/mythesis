@@ -60,7 +60,7 @@ void Recuperartgets(char data[9]){
   int8_t cont=1;
   for (int i = 0; i < 4; i++)
   {
-    if (data[i+1]==','){
+    if (data[cont]==','){
       cont+=1;
       bfferX[i]=".";
       break;
@@ -71,7 +71,7 @@ void Recuperartgets(char data[9]){
   }
     for (int i = 0; i < 4; i++)
   {
-    if (data[i+1]==','){
+    if (data[cont]==','){
       cont+=1;
       bfferY[i]=".";
       break;
