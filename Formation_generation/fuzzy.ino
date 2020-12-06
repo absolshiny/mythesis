@@ -117,30 +117,27 @@ void evafuzzycation (byte si, byte sc, byte sd)
   vmot2=round(Dr/susr);
   return; 
 }
-void forma()
+void forma(uint16_t partner)
 {
-    uint16_t partner;
     uint16_t Dist = 40;
     float f_ang=0;
     switch (IDbot)
     {
     case 3:
-      Xtget=X+15 ;
+      Xtget=X+15;
       Ytget=70;
       break;
     default:
     if (IDbot < 3)
           {
             f_ang=-PI_2*7/8;
-            partner=IDbot+1;
           }
      else 
           {
             f_ang=-PI_2*3/8;
-            partner=IDbot-1;
           }
-    Xtget=posi.x[partner]+(sin(f_ang)*Dist);
-    Ytget=posi.y[partner]+(-cos(f_ang)*Dist);
+    Xtget=posi.x[partner-1]+(sin(f_ang)*Dist);
+    Ytget=posi.y[partner-1]+(-cos(f_ang)*Dist);
     break;
     }    
 

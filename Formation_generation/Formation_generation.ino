@@ -9,10 +9,10 @@ SoftwareSerial ESP1 (2, 3);
 
 byte Permiso=0;
 
-float X = 150;
-float Y = 120;
-float xthe=0;
-float ythe=-1;
+float X = 0;
+float Y = 135;
+float xthe=1;
+float ythe=0;
 
 float Xtget = 0;
 float Ytget = 0;
@@ -24,6 +24,7 @@ const uint8_t id1 = 2; //izq
 const uint8_t id2 = 8; //der
 
 int16_t IDbot;
+int16_t Idcompanero;
 long unsigned int lastcom = 0;
 byte Statecom = 1;
 
@@ -109,8 +110,7 @@ void setup() {
   //Serial.print(" : ");
   //Serial.print(Ytget);
   //Serial.println();
-  delay(1000);
-  
+  Idcompanero=companero(IDbot,1);//0=Linea, 1=figura centrica  
   if (Permiso == 0)
 {
   while (true){
@@ -122,6 +122,7 @@ void setup() {
   }
 }
 
+delay(IDbot*4000);
   
 }
 
@@ -140,28 +141,30 @@ void loop() {
     
     odometria(vmot1, vmot2, X, Y, xthe,ythe);
 
-    //if (dist1cm < 8 or dist2cm < 10 or dist3cm<8)
-   // {
-//      if (dist2cm < 10)
-//      {
-//        if (c == 0) {
-//          c = 4;
-//        }
-//        else {
-//          c = c - 1;
-//        }
-//      }
-
-
-      //evafuzzycation(dist1cm, dist2cm, dist3cm);
-     // espera1 = 1000;
-   /// }
-    //else
-    //{
+    if (dist2cm < 15)
+   {
+      if (dist1cm < 10)
+     {
+      vmot1=400;
+      vmot2=130;
+      }
+      if (dist3cm < 10)
+     {
+      vmot1=130;
+      vmot2=400;
+      }
+      else{
+      vmot1=450;
+      vmot2=120;
+      }
+      espera1=200;
+    }
+   else
+    {
       cinematica20 (X, Y, Xtget, Ytget);
       movfuzzycator(alpha, P);
       espera1 =100;
-    //}
+    }
     motor(vmot1, vmot2);
 
 
@@ -176,7 +179,7 @@ void loop() {
     incommingmsg=1;
     Statecom = 2;
   }
-  if (Statecom == 2 and ((millis() - lastcom) > 1500))
+  if (Statecom == 2 and ((millis() - lastcom) > 1000))
   {
 
     SendPositions(X, Y, IDbot, Statecom);
@@ -192,7 +195,7 @@ void loop() {
     incommingmsg=1;
   }
 
-  if ((Statecom == 4) and ((millis() - lastcom) > 1500))
+  if ((Statecom == 4) and ((millis() - lastcom) > 1000))
   {
 
     Ask4allpositions(Statecom);
@@ -218,7 +221,7 @@ void loop() {
   {
     if (Permiso==0)
     {
-    forma();
+    forma(Idcompanero);
     }
     
     Statecom=1;
@@ -237,34 +240,100 @@ void loop() {
     {
    ask4permission();
    delay(500);
-   if (Permiso==0)
+   if (Permiso==2)
       {
     break;
       }
     }
     switch(IDbot){
       case 3:
-      delay(1);
+      break;
+      case 2:
+      delay(3000);
       break;
       case 4:
       delay(5000);
       break;
-      case 2:
-      delay(10000);
+      case 1:
+      delay(7000);
       break;
       case 5:
-      delay(15000);
-      break;
-      case 1:
-      delay(20000);
+      delay(9000);
       break;
       case 6:
-      delay(25000);
+      delay(1100);
       break;
-    }
-    
-    forma();
+      }
+    Ask4allpositions(3);
+    delay(700);
+    Ask4allpositions(4);
+    forma(Idcompanero);
     cinematica20 (X, Y, Xtget, Ytget);
   }
 
 }
+
+int16_t companero(int ID,int forma)
+{
+  int16_t Idpart;
+  switch(forma)
+  {
+    case 0: //Es una linea
+    if (ID==6){
+     Idpart=0;
+    }
+    else{
+    Idpart==ID+1;
+    }
+    break;
+    case 1: //Es una figura con centro
+     if (ID==3){
+     Idpart=0;
+    }
+    else{
+      if (ID<3){
+        Idpart==ID+1;
+      }
+      else{
+        Idpart==ID-1;
+      }
+    }
+    break;
+  }
+  return Idpart;
+}
+
+void forma_esp(int16_t ID,int16_t compi){
+  bool mark=true;
+  while (mark)
+  {      
+    Ask4allpositions(3);
+    delay(700);
+    Ask4allpositions(4);
+    
+    switch(compi){
+      case 0:
+      mark=false;
+      break;
+      case 3:
+      if (IDbot<3)
+        {
+        if (posi.x[compi-1]>120)
+          {
+            mark=false;
+          } 
+        }
+        else{
+          if (posi.x[1]>120)
+          {
+            mark=false;
+          } 
+        }
+        }
+      break;
+    } 
+    return;
+  }
+ 
+  
+  
