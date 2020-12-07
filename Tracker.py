@@ -6,11 +6,12 @@ import math
 import numpy as np
 
 def Transform(bbxes,image_measure,realmeshure,orden):
-    coordinates= [[0,0]]*len(bbxes)
-    escala= realmeshure[0]/image_measure[0]
-    for box,ind in zip(bbxes,orden):
+    coordinates= []
+    escala= realmeshure[0]/image_measure[1]
+    for ind in orden:
+        box=bbxes[ind]
         coordinates_r= [(box[0]+box[2]/2)*escala,(box[1]+box[3]/2)*escala]
-        coordinates[ind]=coordinates_r
+        coordinates.append(coordinates_r)
     post(str(coordinates)) 
     return
 
@@ -20,9 +21,9 @@ def med_dist(arr1,arr2):
 
 def ordenar(Allpositions,bbxes,image_measure,realmeshure):
     coordinates=[]
-    escala= realmeshure[0]/image_measure[0]
+    escala= realmeshure[0]/image_measure[1]
     orden=[]
-    r_list=[int(coord) for coord in Allpositions]
+    r_list=[float(coord) for coord in Allpositions]
     r_list = [r_list[i:i+2] for i in range(0, len(r_list), 2)]
     for box in bbxes:
         coordinates_r= [(box[0]+box[2]/2)*escala,(box[1]+box[3]/2)*escala]
@@ -40,7 +41,7 @@ with open('points_bbx.txt') as json_file:
 
 bbx=data["Bboxs"]
 ptsrc=data["Puntos"]
-terrain_dim=(110,84)
+terrain_dim=(144,84)
 Trdict={'csrt':cv2.TrackerCSRT_create,
         'kcf':cv2.TrackerKCF_create,
         'boosting': cv2.TrackerBoosting_create,
