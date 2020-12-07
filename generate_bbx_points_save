@@ -25,7 +25,7 @@ def click_event(event,x,y,flags,param):
         
 
 #v=cv2.VideoCapture(r'/home/david/mythesis/VID_20201201_203106.mp4')
-v= cv2.VideoCapture(1)
+v= cv2.VideoCapture(2)
 ret,frame=v.read()
 image=cv2.resize(frame,(720,480),interpolation = cv2.INTER_AREA) 
 cv2.imshow('image', image)
@@ -38,11 +38,12 @@ image2=correct_image(image,Positions)
 Tracking=int(input("Cantidad de robots a seguir: "))
 for i in range (Tracking):
     cv2.imshow('frame',image2)
+    
     bbi=cv2.selectROI('frame',image2)
     bbx.append(bbi)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
+v.release()
 Json={"Puntos":Positions,"Bboxs":bbx}
 
 with open('points_bbx.txt', 'w') as outfile:
