@@ -12,32 +12,32 @@ void cinematica20(float xr, float yr, float xt,float yt)
   return;
 }
 
-void tangyang(float alpa, float Pet) 
-{ 
-  
-  if (abs(alpa)>1)
-  {
-    v=0;
-    w=alpa*1.7;  
-//    Serial.println("-----------corregir angulo");
-
-    
-  }
-  else
-  {
-    v=13;
-    w=0;
-//   Serial.println("----------AVANZAR-");
-
-  }
-//  Serial.println("v y w  y alpha valores: ");
-//  Serial.print(v);
-//  Serial.print(" ");
-//  Serial.print(w);
-//  Serial.print("                ");
-//  Serial.println(alpa);
-  return;
-}
+//void tangyang(float alpa, float Pet) 
+//{ 
+//  
+//  if (abs(alpa)>1)
+//  {
+//    v=0;
+//    w=alpa*1.7;  
+////    Serial.println("-----------corregir angulo");
+//
+//    
+//  }
+//  else
+//  {
+//    v=13;
+//    w=0;
+////   Serial.println("----------AVANZAR-");
+//
+//  }
+////  Serial.println("v y w  y alpha valores: ");
+////  Serial.print(v);
+////  Serial.print(" ");
+////  Serial.print(w);
+////  Serial.print("                ");
+////  Serial.println(alpa);
+//  return;
+//}
 
 
 void odometria(int v_mot1, int vmot_2, float xold, float yold, float xthe_o, float ythe_o)

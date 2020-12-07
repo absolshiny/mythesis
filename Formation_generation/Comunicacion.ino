@@ -6,9 +6,9 @@ void ask4permission(){
   Serial.write("5,1,100,100");
   delay(1500);
   respuesta();
-  char data[3];
-  ReadString.toCharArray(data,3);
-  Permiso=atof(data);
+  char data[4];
+  ReadString.toCharArray(data,4);
+  Permiso=uint8_t(atoi(data));
   return;
 }
 
@@ -18,11 +18,10 @@ void ask4id()
   Serial.write("1,2,2.444,2.444");
   delay(1500);
   respuesta();
-  char data[3];
-  ReadString.toCharArray(data, 3);
+  char data[4];
+  ReadString.toCharArray(data, 4);
   //Serial.println(data);
   IDbot = atof(data);
-
   return;
 }
 
@@ -37,8 +36,6 @@ void respuesta()
 {
   while (Serial.available()) {
     ReadString = Serial.readString();
-    //Serial.print(ReadString);
-    //Serial.println();
     aviso = true;
   }
   return;
@@ -49,12 +46,12 @@ void ask4tgets() {
   Serial.write("2,2,2.444,2.444");
   delay(1500);
   respuesta();
-  char data[9];
-  ReadString.toCharArray(data, 9);
+  char data[12];
+  ReadString.toCharArray(data, 12);
    Recuperartgets(data);
    return;
 }
-void Recuperartgets(char data[9]){
+void Recuperartgets(char data[12]){
   char bfferX[4];
   char bfferY[4];
   int8_t cont=1;
@@ -71,7 +68,7 @@ void Recuperartgets(char data[9]){
   }
     for (int i = 0; i < 4; i++)
   {
-    if (data[cont]==','){
+    if (data[cont]==',' or data[cont]=='}'){
       cont+=1;
       bfferY[i]=".";
       break;
@@ -80,12 +77,12 @@ void Recuperartgets(char data[9]){
     bfferY[i] = data[cont];
     cont+=1;
   }
-  Xtget = atof(bfferX);
-  Ytget = atof(bfferY);
+  Xtget = float(atof(bfferX));
+  Ytget = float(atof(bfferY));
   return;
 }
 
-void ask4tgetsid(int8_t id, byte comstat) {
+void ask4tgetsid(int( id), int( comstat)) {
   if (comstat==5)
   {  
   resetincome();
@@ -106,11 +103,11 @@ void ask4tgetsid(int8_t id, byte comstat) {
   }
 }
 
-void SendPositions(float px , float py , int8_t id, byte comstat)
+void SendPositions(float (px) , float (py) , int (id), int (comstat))
 {
-  resetincome();
-  if (comstat ==1)
+  if (comstat ==3)
   {
+  resetincome();
   char pload[22];
   ReadString = "3," + String(id) + "," + String(px, 1) + "," + String(py, 1) + ",";
   ReadString.toCharArray(pload, 22);
@@ -118,7 +115,7 @@ void SendPositions(float px , float py , int8_t id, byte comstat)
   Serial.write(pload);
   return;
   }
-  if (comstat==2)
+  if (comstat==4)
   {
     respuesta();
     //Serial.print(ReadString);
@@ -127,24 +124,24 @@ void SendPositions(float px , float py , int8_t id, byte comstat)
   return;
 }
 
-void Ask4allpositions(byte comstat)
+void Ask4allpositions(int comstat)
 {
 
-  if (comstat==3){
+  if (comstat==1){
     resetincome();
     Serial.write("4,1,20.00,30.00");
   }
-  if (comstat==4){
+  if (comstat==2){
     respuesta();
   
-  char data[100];
-  ReadString.toCharArray(data, 100);
+  char data[110];
+  ReadString.toCharArray(data, 110);
   int rding = 1;
   for (int i = 0; i < 6; i++)
   {
-    char xt[4];
-    char yt[4];
-    for (int c = 0; c < 3; c++)
+    char xt[7];
+    char yt[7];
+    for (int c = 0; c < 7; c++)
     {
       if (data[rding] == ',')
       {
@@ -156,9 +153,9 @@ void Ask4allpositions(byte comstat)
       rding += 1;
     }
 
-    for (int c = 0; c < 3; c++)
+    for (int c = 0; c < 7; c++)
     {
-      if (data[rding] == ',')
+      if (data[rding] == ',' or data[rding]=='}')
       {
         yt[c]=".";
         rding += 1;
@@ -171,6 +168,8 @@ void Ask4allpositions(byte comstat)
     posi.x[i] = atof(xt);
     posi.y[i] = atof(yt);
   }
+  X=float(posi.x[(IDbot-1)]);
+  Y=float(posi.y[(IDbot-1)]);
   }
   return;
 }

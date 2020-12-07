@@ -19,15 +19,15 @@ void movfuzzycator(float teta, float pf)
   //----------------------------------------
   // valores de pertenencia para distancia
   //----------------------------------------
-  float uvn = trap(pf,-10,-3,5,5.2); //Very Near
-  float une = trap(pf,5,5.1,33,33); // Near
+  float uvn = trap(pf,-10,-3,8,9.2); //Very Near
+  float une = trap(pf,8,9.2,30,33); // Near
   float ufa = trap(pf,30,33,600,800);// Far
   //----------------------------------------
   // valores de pertenencia de los angulos  
   //----------------------------------------
-  float ute0 = trmb(teta,-0.3*PI_2,0*PI_2,0.3*PI_2);//--------------teta cero
-  float uten = trap(teta,-3*PI_2,-2*PI_2,-0.25*PI_2,-0.2*PI_2); // teta negativo
-  float utep = trap(teta,0.02*PI_2,0.25*PI_2,2*PI_2,3*PI_2);//---------------teta positivo
+  float ute0 = trmb(teta,-0.1*PI_2,0,0.1*PI_2);//--------------teta cero
+  float uten = trap(teta,-3*PI_2,-2*PI_2,-0.2*PI_2,-0.09*PI_2); // teta negativo
+  float utep = trap(teta,0.09*PI_2,0.2*PI_2,2*PI_2,3*PI_2);//---------------teta positivo
   //----------------------------------------
   float R1=uvn;
   //float R2=min(une,ute0);
@@ -40,9 +40,9 @@ void movfuzzycator(float teta, float pf)
   float R7=min(ufa,utep);
 
   // valor esperado de conjuntos de salida
-  int vsl=70;
-  int me=200;
-  int fas=400;
+  int vsl=80;
+  int me=210;
+  int fas=370;
   // defuzzificacion
   // valores de pertenencia conjuntos izquierda
   float uvsll=max(R1,R5);
@@ -62,7 +62,7 @@ void movfuzzycator(float teta, float pf)
   return;
 }
 
-void evafuzzycation (byte si, byte sc, byte sd)
+void evafuzzycation (uint8_t si, uint8_t sc, uint8_t sd)
 {
   //----------------------------------------
   // valores de pertenencia sensor central
@@ -116,29 +116,4 @@ void evafuzzycation (byte si, byte sc, byte sd)
   vmot1=round(Dl/susl);
   vmot2=round(Dr/susr);
   return; 
-}
-void forma(uint16_t partner)
-{
-    uint16_t Dist = 40;
-    float f_ang=0;
-    switch (IDbot)
-    {
-    case 3:
-      Xtget=X+15;
-      Ytget=70;
-      break;
-    default:
-    if (IDbot < 3)
-          {
-            f_ang=-PI_2*7/8;
-          }
-     else 
-          {
-            f_ang=-PI_2*3/8;
-          }
-    Xtget=posi.x[partner-1]+(sin(f_ang)*Dist);
-    Ytget=posi.y[partner-1]+(-cos(f_ang)*Dist);
-    break;
-    }    
-
 }
