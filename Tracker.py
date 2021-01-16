@@ -41,7 +41,7 @@ with open('points_bbx.txt') as json_file:
 
 bbx=data["Bboxs"]
 ptsrc=data["Puntos"]
-terrain_dim=(144,84)
+terrain_dim=(240,150)
 Trdict={'csrt':cv2.TrackerCSRT_create,
         'kcf':cv2.TrackerKCF_create,
         'boosting': cv2.TrackerBoosting_create,
@@ -53,9 +53,23 @@ Trdict={'csrt':cv2.TrackerCSRT_create,
 trackers=cv2.MultiTracker_create()
 
 #v=cv2.VideoCapture(r'/home/david/mythesis/VID_20201201_203106.mp4')
-v= cv2.VideoCapture(2)
+v= cv2.VideoCapture(1, cv2.CAP_V4L2)
+
+v.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+
+width = 1920
+height = 1080
+v.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+v.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+
+
+
 ret,frame=v.read()
-frame=cv2.resize(frame,(720,480),interpolation = cv2.INTER_AREA)
+
+width_2 = 1920//2
+height_2 = 1080//2
+
+frame=cv2.resize(frame,(width_2,height_2),interpolation = cv2.INTER_AREA)
 
 frame_2= correct_image(frame,ptsrc)
 orden= ordenar(get(),bbx,frame_2.shape[:2],terrain_dim)
@@ -70,7 +84,7 @@ for bbi in bbx:
     
 while True:
     ret,frame=v.read()
-    frame=cv2.resize(frame,(720,480),interpolation= cv2.INTER_AREA)
+    frame=cv2.resize(frame,(width_2,height_2),interpolation= cv2.INTER_AREA)
     frame_2= correct_image(frame,ptsrc)
     if not ret:
         break

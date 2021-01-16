@@ -21,10 +21,10 @@ def correct_image(image,ptsrc):
         #ptsrc_IMG= np.array([[39,37.5],[374,56],[37,610],[393,584]])
         ptsrc_np=np.array(ptsrc)
         #ptdst=np.array([[0,0],[132*4,0],[0,336],[132*4,336]])#vis6ta normal
-        ptdst=np.array([[0,0],[144*4,0],[0,336],[144*4,336]])
+        ptdst=np.array([[0,0],[240*4,0],[0,150*4],[240*4,150*4]])
         #ptdst=np.array(ptdst_lst)
         h, status = cv2.findHomography(ptsrc_np, ptdst)
-        im_out = cv2.warpPerspective(image, h, (144*4,336))
+        im_out = cv2.warpPerspective(image, h, (240*4,150*4))
         #cv2.imwrite("File.jpg", im_out)
         #imgplot = plt.imshow(im_out)
         #plt.show()

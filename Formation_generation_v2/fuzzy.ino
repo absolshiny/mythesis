@@ -19,21 +19,21 @@ void movfuzzycator(float teta, float pf)
   //----------------------------------------
   // valores de pertenencia para distancia
   //----------------------------------------
-  float uvn = trap(pf,-10,-3,8,9.2); //Very Near
-  float une = trap(pf,8,9.2,30,33); // Near
-  float ufa = trap(pf,30,33,600,800);// Far
+  float uvn = trap(pf,-10,-3,8,13); //Very Near
+  float une = trap(pf,8,13,30,35); // Near
+  float ufa = trap(pf,30,35,600,800);// Far
   //----------------------------------------
   // valores de pertenencia de los angulos  
   //----------------------------------------
-  float ute0 = trmb(teta,-0.1*PI_2,0,0.1*PI_2);//--------------teta cero
-  float uten = trap(teta,-3*PI_2,-2*PI_2,-0.2*PI_2,-0.09*PI_2); // teta negativo
-  float utep = trap(teta,0.09*PI_2,0.2*PI_2,2*PI_2,3*PI_2);//---------------teta positivo
+  float ute0 = trmb(teta,-0.33*PI_2,0,0.33*PI_2);//--------------teta cero
+  float uten = trap(teta,-3*PI_2,-2*PI_2,-0.3*PI_2,-0*PI_2); // teta negativo
+  float utep = trap(teta,0*PI_2,0.3*PI_2,2*PI_2,3*PI_2);//---------------teta positivo
   //----------------------------------------
   float R1=uvn;
-  //float R2=min(une,ute0);
-  //float R3=min(ufa,ute0);
-  float R2= ute0;
-  float R3=R2;
+  float R2=min(une,ute0);
+  float R3=min(ufa,ute0);
+  //float R2= ute0;
+  //float R3=R2;
   float R4=min(une,uten);
   float R5=min(une,utep);
   float R6=min(ufa,uten);
@@ -41,8 +41,8 @@ void movfuzzycator(float teta, float pf)
 
   // valor esperado de conjuntos de salida
   int vsl=70;
-  int me=180;
-  int fas=350;
+  int me=210;
+  int fas=430;
   // defuzzificacion
   // valores de pertenencia conjuntos izquierda
   float uvsll=max(R1,R5);

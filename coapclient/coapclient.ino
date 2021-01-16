@@ -37,7 +37,7 @@ void callback_response(coapPacket &packet, IPAddress ip, int port) {
 
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(19200);
 
   WiFi.begin(ssid, password);
   //Serial.println(" ");

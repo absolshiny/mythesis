@@ -1,8 +1,7 @@
-bool pr_vez=true;
-long e_mov_d;
+
 void forma(int (partner))
 {
-    float Dist = 35;
+    float Dist = 40;
     float f_ang=0;
     switch (IDbot)
     {
@@ -14,7 +13,7 @@ void forma(int (partner))
          //Ytget=Ytget;
       }
       else if((millis()-e_mov_d)>10000){
-          Xtget+=2;
+          Xtget=Xtget;
           Ytget=Ytget;
       }
       break;
@@ -38,12 +37,12 @@ int delay_4_part(int (IDbot), int(IDcomp)){
   while(test)
      {
       Ask4allpositions(1);
-      delay(1300);
+      delay(1400);
       Ask4allpositions(2);
       int index= Idcompanero-1;
       float dist_part= sqrt(pow((posi.x[index]-X),2));
       int ifzero=0;
-      if ((dist_part>=40.0f) || (IDcomp==ifzero))
+      if ((dist_part>=50.0) || (IDcomp==ifzero))
         {
           test=!test;
         }
@@ -79,4 +78,29 @@ int companero(int ID,int forma)
     break;
   }
   return Idpart;
+}
+
+void setinicio(int robot){
+  switch(robot){
+    case (1):
+     X=17;Y=17;r=3; spd=7;
+    break;
+    case (2):
+    X=17;Y=41;r=3;spd=2;
+    break;
+    case (3):
+    X=17; Y=71; r=3; spd=-15;
+    break;
+    case (4):
+    X=17;Y=90;r=2.5; spd=0;
+    break;
+    case (5):
+   X=17;Y=121;r=2.5;spd=+10;
+    break;
+    case (6):
+   X=17;Y=141;r=2.5;spd=0;
+    break;
+    
+  }
+  return;
 }
